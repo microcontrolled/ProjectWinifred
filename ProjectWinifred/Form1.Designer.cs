@@ -1,6 +1,6 @@
 ﻿namespace ProjectWinifred
 {
-    partial class Form1
+    partial class altGUI
     {
         /// <summary>
         /// Required designer variable.
@@ -29,11 +29,341 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.gmap = new GMap.NET.WindowsForms.GMapControl();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.nodeList = new System.Windows.Forms.ListBox();
+            this.consoleTerm = new System.Windows.Forms.RichTextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.Main = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tabControl1.SuspendLayout();
+            this.Main.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // gmap
+            // 
+            this.gmap.Bearing = 0F;
+            this.gmap.CanDragMap = true;
+            this.gmap.EmptyTileColor = System.Drawing.Color.Navy;
+            this.gmap.GrayScaleMode = false;
+            this.gmap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
+            this.gmap.LevelsKeepInMemmory = 5;
+            this.gmap.Location = new System.Drawing.Point(228, 8);
+            this.gmap.MarkersEnabled = true;
+            this.gmap.MaxZoom = 18;
+            this.gmap.MinZoom = 3;
+            this.gmap.MouseWheelZoomEnabled = true;
+            this.gmap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
+            this.gmap.Name = "gmap";
+            this.gmap.NegativeMode = false;
+            this.gmap.PolygonsEnabled = true;
+            this.gmap.RetryLoadTile = 0;
+            this.gmap.RoutesEnabled = true;
+            this.gmap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
+            this.gmap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
+            this.gmap.ShowTileGridLines = false;
+            this.gmap.Size = new System.Drawing.Size(601, 493);
+            this.gmap.TabIndex = 0;
+            this.gmap.Zoom = 10D;
+            this.gmap.Load += new System.EventHandler(this.gMapControl1_Load);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(138, 8);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(84, 21);
+            this.comboBox1.TabIndex = 1;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(138, 35);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(84, 21);
+            this.comboBox2.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(100, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "ALT5801 COM Port";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 38);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(78, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "GPS COM Port";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(9, 91);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(213, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Connect";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // nodeList
+            // 
+            this.nodeList.FormattingEnabled = true;
+            this.nodeList.Location = new System.Drawing.Point(9, 250);
+            this.nodeList.Name = "nodeList";
+            this.nodeList.Size = new System.Drawing.Size(213, 251);
+            this.nodeList.TabIndex = 6;
+            // 
+            // consoleTerm
+            // 
+            this.consoleTerm.Location = new System.Drawing.Point(9, 120);
+            this.consoleTerm.Name = "consoleTerm";
+            this.consoleTerm.Size = new System.Drawing.Size(213, 124);
+            this.consoleTerm.TabIndex = 7;
+            this.consoleTerm.Text = "";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(9, 62);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(213, 23);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "Refresh Ports";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.Main);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(843, 534);
+            this.tabControl1.TabIndex = 9;
+            // 
+            // Main
+            // 
+            this.Main.Controls.Add(this.comboBox1);
+            this.Main.Controls.Add(this.gmap);
+            this.Main.Controls.Add(this.nodeList);
+            this.Main.Controls.Add(this.consoleTerm);
+            this.Main.Controls.Add(this.button2);
+            this.Main.Controls.Add(this.comboBox2);
+            this.Main.Controls.Add(this.button1);
+            this.Main.Controls.Add(this.label1);
+            this.Main.Controls.Add(this.label2);
+            this.Main.Location = new System.Drawing.Point(4, 22);
+            this.Main.Name = "Main";
+            this.Main.Padding = new System.Windows.Forms.Padding(3);
+            this.Main.Size = new System.Drawing.Size(835, 508);
+            this.Main.TabIndex = 0;
+            this.Main.Text = "Main Control";
+            this.Main.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.label5);
+            this.tabPage2.Controls.Add(this.button4);
+            this.tabPage2.Controls.Add(this.textBox5);
+            this.tabPage2.Controls.Add(this.checkBox2);
+            this.tabPage2.Controls.Add(this.textBox4);
+            this.tabPage2.Controls.Add(this.textBox3);
+            this.tabPage2.Controls.Add(this.button3);
+            this.tabPage2.Controls.Add(this.label4);
+            this.tabPage2.Controls.Add(this.label3);
+            this.tabPage2.Controls.Add(this.textBox2);
+            this.tabPage2.Controls.Add(this.textBox1);
+            this.tabPage2.Controls.Add(this.checkBox1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(835, 508);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Debug";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(6, 81);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(206, 22);
+            this.button3.TabIndex = 5;
+            this.button3.Text = "Send to Mesh";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Enabled = false;
+            this.label4.Location = new System.Drawing.Point(6, 58);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(54, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Longitude";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Enabled = false;
+            this.label3.Location = new System.Drawing.Point(6, 32);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Latitude";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Enabled = false;
+            this.textBox2.Location = new System.Drawing.Point(71, 55);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(98, 20);
+            this.textBox2.TabIndex = 2;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(71, 29);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(98, 20);
+            this.textBox1.TabIndex = 1;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 6);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(105, 17);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "Spoof GPS Data";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(175, 29);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(37, 20);
+            this.textBox3.TabIndex = 6;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(175, 55);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(37, 20);
+            this.textBox4.TabIndex = 7;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(6, 143);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(190, 17);
+            this.checkBox2.TabIndex = 8;
+            this.checkBox2.Text = "Use randomly generated device ID";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(55, 168);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(76, 20);
+            this.textBox5.TabIndex = 9;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(137, 166);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 10;
+            this.button4.Text = "Apply";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 171);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(43, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "New ID";
+            // 
+            // altGUI
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(867, 558);
+            this.Controls.Add(this.tabControl1);
+            this.Name = "altGUI";
+            this.Text = "Project Winifred";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.tabControl1.ResumeLayout(false);
+            this.Main.ResumeLayout(false);
+            this.Main.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private GMap.NET.WindowsForms.GMapControl gmap;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListBox nodeList;
+        private System.Windows.Forms.RichTextBox consoleTerm;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage Main;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 
