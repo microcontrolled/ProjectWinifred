@@ -37,6 +37,18 @@ namespace ProjectFastNet
             latLog[1] = float.Parse(NMEAstring[4 - ParseGPS.getCommand()]);
             return latLog;
         }
+        //Get decimal coordinates
+        public static float[] getDecCoordinates()
+        {
+            float[] latlog = new float[2];
+            
+            latlog[0] = float.Parse(NMEAstring[2 - ParseGPS.getCommand()].Substring(0, 2)) + (float.Parse(NMEAstring[2 - ParseGPS.getCommand()].Substring(2, 7)) / 60);
+            latlog[1] = float.Parse(NMEAstring[4 - ParseGPS.getCommand()].Substring(0, 3)) + (float.Parse(NMEAstring[4 - ParseGPS.getCommand()].Substring(3, 7)) / 60);
+            if (NMEAstring[3 - ParseGPS.getCommand()][0] == 'S') { latlog[0] *= -1; }
+            if (NMEAstring[5 - ParseGPS.getCommand()][0]=='W') { latlog[1] *= -1; };
+            return latlog;
+        }
+
         //Returns a list of strings for the coordinates, sorting the angle from the bearing
         public static List<String> getCoordStr()
         {

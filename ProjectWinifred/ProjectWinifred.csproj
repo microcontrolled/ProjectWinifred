@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="MainHandle.cs" />
     <Compile Include="mDef.cs" />
+    <Compile Include="NodeManagement.cs" />
     <Compile Include="ParseGPS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
