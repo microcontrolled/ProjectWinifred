@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectWinifred", "ProjectWinifred\ProjectWinifred.csproj", "{228210D9-8AC3-4265-9245-165178A5E786}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4A28F778-0ABC-4900-8816-E85295FA3576}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\GMapsMarker.jpg = ..\..\..\GMapsMarker.jpg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
