@@ -153,20 +153,26 @@ namespace ProjectWinifred
             ushort markerCnt = 0;
             try
             {
+                //if (!NodeManagement.waitForFormSort)
+                //{
                 foreach (KeyValuePair<string, string> item in NodeManagement.nodeIndex)
                 {
                     //Pin the location of all nodes communicating with the local node
                     String[] parsedIn = item.Value.Split(',');
+                    //if (!parsedIn[0].Equals(String.Format("{0:X}", NodeManagement.devID)))
+                    //{
                     if (nodeMarkers.ContainsKey(parsedIn[0])) { markers.Markers.Remove(nodeMarkers[parsedIn[0]]); }
-                    nodeMarkers.Remove(parsedIn[0]);
-                    nodeMarkers.Add(parsedIn[0], new GMarkerGoogle(new PointLatLng(float.Parse(parsedIn[1]), float.Parse(parsedIn[2])), markerList[(markerCnt++) % markerList.Length]));    //Add the new marker, taking data from the string stored in the node directory and marking it with one of the listed markers, in incrementing order
-                    markers.Markers.Add(nodeMarkers[parsedIn[0]]);
-                    //nodeMarkers[parsedIn[0]].ToolTipText = item.Value;
+                    //nodeMarkers.Remove(parsedIn[0]);
+                    nodeMarkers[parsedIn[0]] = new GMarkerGoogle(new PointLatLng(float.Parse(parsedIn[1]), float.Parse(parsedIn[2])), markerList[(markerCnt++) % markerList.Length]);    //Add the new marker, taking data from the string stored in the node directory and marking it with one of the listed markers, in incrementing order
+                    markers.Markers.Add(nodeMarkers[parsedIn[0]]);               
+                    nodeMarkers[parsedIn[0]].ToolTipText = item.Value.Split(',')[0];
+                    //nodeMarkers[parsedIn[0]].ToolTipMode = MarkerTooltipMode.Always;
                     //Add new nodes to the GUI list
                     if (!nodeList.Items.Contains(item.Key))
                     {
                         nodeList.Items.Add(item.Key);
                     }
+                    //}
                 }
                 for (int i = 0; i < nodeList.Items.Count; i++)                                       //Scan the listBox for expired nodes and remove them from the list
                 {
@@ -176,6 +182,7 @@ namespace ProjectWinifred
                         nodeList.Items.Remove((string)nodeList.Items[i]);
                     }
                 }
+                //}
             }
             catch (Exception) { };
         }
@@ -205,15 +212,21 @@ namespace ProjectWinifred
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             NodeManagement.dynamicUpdates = radioButton1.Checked;
+            NodeManagement.forceCoordinator = radioButton2.Checked;
+            NodeManagement.forceRouter = radioButton3.Checked;
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
+            NodeManagement.dynamicUpdates = radioButton1.Checked;
             NodeManagement.forceCoordinator = radioButton2.Checked;
+            NodeManagement.forceRouter = radioButton3.Checked;
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
+            NodeManagement.dynamicUpdates = radioButton1.Checked;
+            NodeManagement.forceCoordinator = radioButton2.Checked;
             NodeManagement.forceRouter = radioButton3.Checked;
         }
 
@@ -240,6 +253,26 @@ namespace ProjectWinifred
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
             NodeManagement.transmitCheck = checkBox4.Checked;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            debugTerm.Text = "";
+        }
+
+        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
+        {
+            NodeManagement.transmitToLinkedData = (int)numericUpDown4.Value;
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            NodeManagement.transmitLinkedData = checkBox5.Checked; 
+        }
+
+        private void numericUpDown5_ValueChanged(object sender, EventArgs e)
+        {
+            NodeManagement.transmitLinkedPause = (int)numericUpDown5.Value;
         }
     }
 }

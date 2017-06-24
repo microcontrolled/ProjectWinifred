@@ -42,8 +42,16 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Main = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.debugTerm = new System.Windows.Forms.RichTextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
@@ -69,11 +77,13 @@
             this.button3 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.Main.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -211,7 +221,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.debugTerm);
+            this.tabPage2.Controls.Add(this.groupBox4);
             this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Controls.Add(this.groupBox2);
             this.tabPage2.Controls.Add(this.groupBox1);
@@ -223,16 +233,42 @@
             this.tabPage2.Text = "Node Management";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.button5);
+            this.groupBox4.Controls.Add(this.debugTerm);
+            this.groupBox4.Location = new System.Drawing.Point(273, 7);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(331, 495);
+            this.groupBox4.TabIndex = 24;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Debug Terminal";
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(6, 464);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(319, 23);
+            this.button5.TabIndex = 24;
+            this.button5.Text = "Clear Terminal";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // debugTerm
             // 
-            this.debugTerm.Location = new System.Drawing.Point(272, 6);
+            this.debugTerm.Location = new System.Drawing.Point(6, 16);
             this.debugTerm.Name = "debugTerm";
-            this.debugTerm.Size = new System.Drawing.Size(332, 496);
+            this.debugTerm.Size = new System.Drawing.Size(319, 442);
             this.debugTerm.TabIndex = 23;
             this.debugTerm.Text = "";
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.numericUpDown5);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Controls.Add(this.numericUpDown4);
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.checkBox5);
             this.groupBox3.Controls.Add(this.checkBox4);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.numericUpDown3);
@@ -246,10 +282,85 @@
             this.groupBox3.Controls.Add(this.numericUpDown2);
             this.groupBox3.Location = new System.Drawing.Point(6, 86);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(260, 220);
+            this.groupBox3.Size = new System.Drawing.Size(260, 295);
             this.groupBox3.TabIndex = 22;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Mesh Adaption Properties";
+            // 
+            // numericUpDown5
+            // 
+            this.numericUpDown5.Location = new System.Drawing.Point(187, 268);
+            this.numericUpDown5.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numericUpDown5.Name = "numericUpDown5";
+            this.numericUpDown5.Size = new System.Drawing.Size(61, 20);
+            this.numericUpDown5.TabIndex = 29;
+            this.numericUpDown5.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numericUpDown5.ValueChanged += new System.EventHandler(this.numericUpDown5_ValueChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 270);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(162, 13);
+            this.label10.TabIndex = 28;
+            this.label10.Text = "Pause in linked transmit grouping";
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(187, 241);
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(61, 20);
+            this.numericUpDown4.TabIndex = 27;
+            this.numericUpDown4.Value = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+            this.numericUpDown4.ValueChanged += new System.EventHandler(this.numericUpDown4_ValueChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 243);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(160, 13);
+            this.label9.TabIndex = 26;
+            this.label9.Text = "Packets between linked transmit";
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Checked = true;
+            this.checkBox5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox5.Location = new System.Drawing.Point(6, 217);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(121, 17);
+            this.checkBox5.TabIndex = 25;
+            this.checkBox5.Text = "Transmit linked data";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Checked = true;
+            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox4.Location = new System.Drawing.Point(6, 116);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(135, 17);
+            this.checkBox4.TabIndex = 24;
+            this.checkBox4.Text = "Check for transmit ACK";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
             // 
             // label8
             // 
@@ -512,17 +623,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(6, 116);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(135, 17);
-            this.checkBox4.TabIndex = 24;
-            this.checkBox4.Text = "Check for transmit ACK";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
-            // 
             // altGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -537,8 +637,11 @@
             this.Main.ResumeLayout(false);
             this.Main.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
@@ -592,6 +695,13 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.RichTextBox debugTerm;
         private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.NumericUpDown numericUpDown5;
+        private System.Windows.Forms.Label label10;
     }
 }
 

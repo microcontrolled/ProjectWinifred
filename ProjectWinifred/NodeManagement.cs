@@ -38,9 +38,11 @@ namespace ProjectWinifred
         public static bool isCoord = false;
         public static bool shouldTransmit = true;
         public static bool waitForSort = false;
+        public static bool waitForFormSort = false;
 
         public static Dictionary<string,string> nodeIndex = new Dictionary<string,string>();
         public static Dictionary<string, long> nodeTimeout = new Dictionary<string, long>();
+        public static Dictionary<ushort, int> receiveFlags = new Dictionary<ushort, int>();
 
         public static bool signalFound = false;
 
@@ -53,7 +55,10 @@ namespace ProjectWinifred
         public static int waitForCoordReassign = 40;
         public static int waitForRouterReassign = 40;
         public static int packetsPerSecond = 2;
-        public static bool transmitCheck = false;
+        public static bool transmitCheck = true;
+        public static bool transmitLinkedData = true;
+        public static int transmitToLinkedData = 6;
+        public static int transmitLinkedPause = 5;
 
         //Variables intended to pass data to Form1
         public static string[] debugSet = new string[100];
@@ -115,12 +120,8 @@ namespace ProjectWinifred
             while (true)
             {
                 bool cleanSweep = true;                            //Triggered true if any nodes are read active in the print loop
-                //Console.Clear();
-                //Console.WriteLine("Active Device: ");
-                //Console.WriteLine(deviceData);
-                //Console.WriteLine();
                 long currentTicks = DateTime.UtcNow.Ticks / 10000000;
-                if (nodeTimeout.Count == 0) { cleanSweep = false; }
+                if (nodeIndex.Count == 0) { cleanSweep = false; }
                 else
                 {
                     waitForSort = true;
@@ -128,7 +129,6 @@ namespace ProjectWinifred
                     {
                         foreach (KeyValuePair<string, long> item in nodeTimeout)
                         {
-                            //MessageBox.Show(item.Key + "   " + item.Value);
                             if ((currentTicks - item.Value) > secondsToKill)
                             {
                                 nodeIndex.Remove(item.Key);
@@ -139,28 +139,9 @@ namespace ProjectWinifred
                     catch (Exception) { };
                     waitForSort = false;
                 }
-                
-
-                /*
-                    {
-                        timeToRefresh[i] = 0;
-                        devRefresh[i] = false;
-                    }
-                    else
-                    {
-                        timeToRefresh[i]++;
-                    }
-                    if (timeToRefresh[i] < 12)
-                    {
-                        //Console.WriteLine("Mesh Device {0}", i);
-                        //Console.WriteLine(receivedData[i]);
-                        //Console.WriteLine();
-                        cleanSweep = true;
-                    }
-                }*/
 
                 //If the device was auto-configed as a coordinator, turn back into a router once a node has been found
-                if (isCoord && cleanSweep && postFixRouterConvert)
+                if (isCoord && cleanSweep && postFixRouterConvert && dynamicUpdates)
                 {
                     //Console.Clear();
                     shouldTransmit = false;
@@ -176,7 +157,7 @@ namespace ProjectWinifred
                     cleanCount = 0;
                 }
                 //Check if the ALT5801 should be reassigned (to coordinator)
-                if ((cleanCount>waitForCoordReassign)&&dynamicUpdates&&isCoord)   //((((cleanCount > waitForCoordReassign) && (isCoord)) || ((cleanCount > waitForRouterReassign) && (!isCoord))) && (dynamicUpdates))
+                if ((cleanCount>waitForCoordReassign) && dynamicUpdates && isCoord)   //((((cleanCount > waitForCoordReassign) && (isCoord)) || ((cleanCount > waitForRouterReassign) && (!isCoord))) && (dynamicUpdates))
                 {
                     shouldTransmit = false;
                     initALT5801(false);
@@ -207,47 +188,37 @@ namespace ProjectWinifred
         {
             Console.WriteLine("Transmit Thread Started");
             Random getPause = new Random();
+            int transmitCount = 0;
             while (runTranceiver)
             {
                 //Thread.Sleep(getPause.Next(00, 1200));
                 Thread.Sleep(1000 / packetsPerSecond);
                 if (shouldTransmit)
                 {
-                    int sleepCycles = 0;
+                    if (transmitLinkedData && (transmitToLinkedData < transmitCount))
+                    {
+                        try
+                        {
+                            waitForSort = waitForFormSort = true;
+                            Thread.Sleep(transmitLinkedPause);
+                            foreach (KeyValuePair<string, string> pair in nodeIndex)
+                            {
+                                AltCOM.genCom(wirelessIn, AltCOM.ZB_SEND_DATA(0xFFFD, 2, 0, 1, 1, Encoding.UTF8.GetBytes(pair.Value)));
+                                waitForAck(mDef.ZB_SEND_DATA_RSP);
+                                waitForAck(mDef.ZB_SEND_DATA_CONFIRM);
+                            }
+                            waitForSort = waitForFormSort = false;
+                            transmitCount = 0;
+                        }
+                        catch (Exception) { }
+                    }
                     AltCOM.genCom(wirelessIn, AltCOM.ZB_SEND_DATA(0xFFFD, 2, 0, 1, 1, Encoding.UTF8.GetBytes(deviceData)));
                     if (transmitCheck)
                     {
-                        while (!AltGET.isMessage(rxPacket, mDef.ZB_SEND_DATA_RSP))
-                        {
-                            Thread.Sleep(20);
-                            sleepCycles++;
-                            if (sleepCycles > 100)
-                            {
-                                writeLine("ERROR: TRANSMIT FAILED");
-                                sleepCycles = 9999;
-                                break;
-                            }
-                        }
-                        if (sleepCycles != 9999)
-                        {
-                            sleepCycles = 0;
-                            while (!AltGET.isMessage(rxPacket, mDef.ZB_SEND_DATA_CONFIRM))
-                            {
-                                Thread.Sleep(20);
-                                sleepCycles++;
-                                if (sleepCycles > 100)
-                                {
-                                    writeLine("ERROR: TRANSMIT FAILED (STAGE 2)");
-                                    sleepCycles = 9999;
-                                    break;
-                                }
-                            }
-                            if (sleepCycles != 9999)
-                            {
-                                writeLine("Data packet Transmitted");
-                            }
-                        }
+                        waitForAck(mDef.ZB_SEND_DATA_RSP);
+                        waitForAck(mDef.ZB_SEND_DATA_CONFIRM);
                     }
+                    transmitCount++;
                 }
             }
         }
@@ -260,20 +231,16 @@ namespace ProjectWinifred
             {
                 rxPacket = AltGET.getPacket(wirelessIn);
 
-                /*Console.WriteLine("Packet Received");                             //Uncomment this to print all incoming transmissions to the console for debugging
-                for (int i=0;i<rxPacket.Length;i++)
-                {
-                    Console.Write("{0} ", String.Format("{0:X}", rxPacket[i]));
-                }
-                Console.WriteLine(" ");*/
+                ushort compVal = BitConverter.ToUInt16(new byte[2] {rxPacket[3], rxPacket[2] }, 0);     //Log the packet for comparison
 
-                if (AltGET.isMessage(rxPacket, 0x4687))
+                //If it's a message, register the node with the index. Otherwise, flag that an RX packet has been received and move on
+                if (compVal==0x4687)
                 {
                     String newDat = Encoding.ASCII.GetString(AltGET.getRx(rxPacket));           //Store the packet locally
                     writeLine(newDat);
                     String[] cotSet = newDat.Split(',');
                     //Look up the devID in the index and see if it's already been entered
-                    while (waitForSort) ;
+                    while (waitForSort);
                     if (nodeIndex.ContainsKey(cotSet[0]))
                     {
                         nodeIndex.Remove(cotSet[0]);
@@ -281,26 +248,12 @@ namespace ProjectWinifred
                     }
                     nodeIndex.Add(cotSet[0], newDat);
                     nodeTimeout.Add(cotSet[0], DateTime.UtcNow.Ticks/10000000);
-                    /* int wasEntered = -1;
-                    for (int i = 0; i < devIndex; i++)
-                    {
-                        if (devLookup[i] == cotSet[0])
-                        {
-                            wasEntered = i;
-                        }
-                    }
-                    if (wasEntered != -1)                             //If it's already registered, override the current data
-                    {
-                        receivedData[wasEntered] = newDat;
-                        devRefresh[wasEntered] = true;
-                    }
-                    else
-                    {                                               //If not, register a new entry in the table and increase the index
-                        devIndex++;
-                        devLookup[devIndex] = cotSet[0];
-                        receivedData[devIndex] = newDat;
-                        devRefresh[devIndex] = true;
-                    }*/
+                }
+                else
+                {
+                    if (receiveFlags.ContainsKey(compVal)) {                                    //Log the data in the table to indicate that the packet has been received
+                        receiveFlags[compVal]++;
+                    } else { receiveFlags.Add(compVal, 1); }
                 }
             }
         }
@@ -340,23 +293,24 @@ namespace ProjectWinifred
             }
         }
 
+        //This will initialize the ALT5801 module as either a coordinator or router
         public static void initALT5801(bool isCoordinator)
         {
             //Run the full initialization procedure for the ALT5801
             AltCOM.genCom(wirelessIn, AltCOM.ZB_WRITE_CFG(0x03, new byte[1] { 3 }));
-            while (!AltGET.isMessage(rxPacket, mDef.ZB_WRITE_CFG_RSP)) ;
+            waitForAck(mDef.ZB_WRITE_CFG_RSP);
             writeLine("Config Reset");
             AltCOM.genCom(wirelessIn, AltCOM.SYS_RESET());
-            while (!AltGET.isMessage(rxPacket, mDef.SYS_RESET_IND)) ;
+            waitForAck(mDef.SYS_RESET_IND);
             writeLine("Device Reset");
             AltCOM.genCom(wirelessIn, AltCOM.ZB_WRITE_CFG(0x83, new byte[2] { 0x12, PANID }));
-            while (!AltGET.isMessage(rxPacket, mDef.ZB_WRITE_CFG_RSP)) ;
+            waitForAck(mDef.ZB_WRITE_CFG_RSP);
             writeLine("Set PANID of the device");
             AltCOM.genCom(wirelessIn, AltCOM.ZB_WRITE_CFG(0x84, new byte[4] { 0, 0, 0, channel }));
-            while (!AltGET.isMessage(rxPacket, mDef.ZB_WRITE_CFG_RSP)) ;
+            waitForAck(mDef.ZB_WRITE_CFG_RSP);
             writeLine("Set the channel of the device to " + channel);
             AltCOM.genCom(wirelessIn, AltCOM.ZB_READ_CFG(0x84));
-            while (!AltGET.isMessage(rxPacket, mDef.ZB_READ_CFG_RSP)) ;
+            waitForAck(mDef.ZB_READ_CFG_RSP);
             writeLine("//////CHANGES CONFIRMED//////");
             /*////////////COPY PASTABLE DEBUG BLOCK FOR PRINTING THE SERIAL TERMINAL/////////
             while (true)
@@ -372,8 +326,8 @@ namespace ProjectWinifred
                 byte[] cmd_out = { 0x02, 0x00 };
                 AltCOM.genCom(wirelessIn, AltCOM.ZB_APP_REGISTER(1, 1, 1, 0, 1, cmd_in, 1, cmd_out));
                 AltCOM.genCom(wirelessIn, AltCOM.ZB_START_REQ());
-                while (!AltGET.isMessage(rxPacket, mDef.ZB_START_REQUEST_RSP)) ;
-                while (!AltGET.isMessage(rxPacket, mDef.ZB_START_CONFIRM)) ;
+                waitForAck(mDef.ZB_START_REQUEST_RSP);
+                waitForAck(mDef.ZB_START_CONFIRM);
                 writeLine("Configured Coordinator");
                 isCoord = true;
             }
@@ -384,32 +338,39 @@ namespace ProjectWinifred
                 int routerWait = 0;
 
                 AltCOM.genCom(wirelessIn, AltCOM.ZB_WRITE_CFG(0x87, new byte[1] { 1 }));
-                while (!AltGET.isMessage(rxPacket, mDef.ZB_WRITE_CFG_RSP)) ;
+                waitForAck(mDef.ZB_WRITE_CFG_RSP);
                 writeLine("Configured Device Type");
 
                 AltCOM.genCom(wirelessIn, AltCOM.SYS_RESET());
-                while (!AltGET.isMessage(rxPacket, mDef.SYS_RESET_IND)) ;
+                waitForAck(mDef.SYS_RESET_IND);
 
                 AltCOM.genCom(wirelessIn, AltCOM.ZB_READ_CFG(0x87));
-                while (!AltGET.isMessage(rxPacket, mDef.ZB_READ_CFG_RSP)) ;
+                waitForAck(mDef.ZB_READ_CFG_RSP);
 
                 byte[] cmd_in = new byte[2] { 0x02, 0x00 };
                 byte[] cmd_out = { 0x01, 0x00 };
                 AltCOM.genCom(wirelessIn, AltCOM.ZB_APP_REGISTER(1, 1, 0, 0, 1, cmd_in, 1, cmd_out));
-                while (!AltGET.isMessage(rxPacket, mDef.ZB_REGISTER_RSP)) ;
+                waitForAck(mDef.ZB_REGISTER_RSP);
                 AltCOM.genCom(wirelessIn, AltCOM.ZB_START_REQ());
-                while (!AltGET.isMessage(rxPacket, mDef.ZB_START_REQUEST_RSP)) ;
-                while (!AltGET.isMessage(rxPacket, mDef.ZB_START_CONFIRM))
+                waitForAck(mDef.ZB_START_REQUEST_RSP);
+                //while (!AltGET.isMessage(rxPacket, mDef.ZB_START_CONFIRM)) ;
+                int flagCnt = 0;
+                while (flagCnt < 1)
                 {
+                    if (receiveFlags.ContainsKey(mDef.ZB_START_CONFIRM))
+                    {
+                        flagCnt = receiveFlags[mDef.ZB_START_CONFIRM];
+                    }
                     if (routerWait > waitForRouterReassign)
                     {
                         break;              //Stop waiting for a response if you waited longer than 5 seconds
                     }
                     routerWait++;
                     Thread.Sleep(250);
-                };
+                }
                 if (routerWait <= waitForRouterReassign)
                 {
+                    receiveFlags[mDef.ZB_START_CONFIRM]--;
                     writeLine("Configured Router");
                     isCoord = false;
                 }
@@ -418,6 +379,21 @@ namespace ProjectWinifred
                     initALT5801(dynamicUpdates);
                 }
             }
+        }
+
+        //Wait for the RX packet to get flagged as received and return true when it does
+        public static bool waitForAck(ushort ackFlag)
+        {
+            int flagCnt = 0;
+            while (flagCnt<1)
+            {
+                if (receiveFlags.ContainsKey(ackFlag))
+                {
+                    flagCnt = receiveFlags[ackFlag];
+                }
+            }
+            receiveFlags[ackFlag]--;
+            return true;
         }
 
         //Call this function to write a message to the richTextBox terminal in Form1
